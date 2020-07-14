@@ -20,21 +20,12 @@ class Square extends React.Component {
             w: props.win,
             onc: props.onClick,
         };
-        console.log(this.state.val,this.state.w,this.state.onc);
     }
 
-    render() {
-        if (this.state.val == null) { 
+    render() { 
             return (
-                <button className="square" onClick={this.state.onClick}></button>
+                <button className="square" onClick={this.state.onc}>{this.state.val}</button>
             );
-         } else {
-            return (
-                <button className="square" onClick={this.state.onClick}>
-                    {this.state.val}
-                </button>
-            );
-        }
     }
 }
 
@@ -51,8 +42,7 @@ class Game extends React.Component {
     }
 
     renderSquare(i,w) {
-        console.log(i,w);
-        var sqprops = {
+        const sqprops = {
             value: this.state.history[i],
             win: w,
             onClick: () => this.handleClick(i),
