@@ -3,64 +3,30 @@ import ReactDOM from 'react-dom'
 import './index.css'
 
 /*
+function Square(props) {
+    return (
+        <button className="square" onClick={props.onClick}>
+            {props.value.val}
+        </button>
+    );
+}
+*/
+
 class Square extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: null,
+            val: props.val,
+            w: props.win,
+            onc: props.onClick,
         };
     }
 
     render() {
-        return ( //onClick={() => alert('Click!')}>
-            <button 
-                className="square"
-                onClick={ () => this.props.onClick() }
-            > 
-                {this.state.value}
+        return (
+            <button className="square" onClick={this.state.onClick}>
+                this.state.val
             </button>
-            // {this.props.value * this.props.value}
-        );
-    }
-}
-*/
-function Square(props) {
-    return (
-        <button className="square" onClick={props.onClick}>
-            {props.value}
-        </button>
-    );
-}
-
-class Board extends React.Component {
-    renderSquare(i) {
-        return (
-            <Square 
-                value={this.props.squares[i]}
-                onClick={() => this.props.onClick(i)}
-            />
-        );
-    }
-
-    render() {
-        return (
-            <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
-            </div>
         );
     }
 }
@@ -75,6 +41,21 @@ class Game extends React.Component {
             stepNumber: 0,
             xIsNext: true,
         };
+    }
+
+    renderSquare(i,w) {
+        var sqprops = {
+            value: this.state.history[i],
+            win: w,
+            onClick: () => this.handleClick(i),
+        };
+        return (
+            <Square 
+                val={sqprops.value}
+                win={sqprops.win}
+                onClick={sqprops.onClick}
+            />
+        );
     }
 
     handleClick(i) {
@@ -128,10 +109,21 @@ class Game extends React.Component {
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board 
-                        squares = {current.squares}
-                        onClick={(i) => this.handleClick(i)}
-                    />
+                    <div className="board-row">
+                        {this.renderSquare(0,winner)}
+                        {this.renderSquare(1,winner)}
+                        {this.renderSquare(2,winner)}
+                    </div>
+                    <div className="board-row">
+                        {this.renderSquare(3,winner)}
+                        {this.renderSquare(4,winner)}
+                        {this.renderSquare(5,winner)}
+                    </div>
+                    <div className="board-row">
+                        {this.renderSquare(6,winner)}
+                        {this.renderSquare(7,winner)}
+                        {this.renderSquare(8,winner)}
+                    </div>
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
@@ -142,57 +134,13 @@ class Game extends React.Component {
     }
 }
 
-/*class descriptiveStatulator extends React.Component {
-    constructor(props) {
-      super(props) 
-      this.state = {*/
-        /*data: 0, //props.sort(function (a,b) { return a - b; } ),
-        min: findMin(),
-        max: findMax(),
-        range: findRange(),
-        size: findSize(),
-        sum: findSum(),
-        mean: findMean(),
-        median: findMedian(),
-        mode: findMode(),
-        sd: findSD(),
-        Q1: findQ1(),
-        Q2: median,
-        Q3: findQ3(),
-        IQR: Q3 - Q1*/
-        /*name: 'a'
-      }
-    }*/
-
-    /*findMin() { return 0; }
-    findMax() { return 0; }
-    findRange() { return 0; }
-    findSize() { return 0; }
-    findMean() { return 0; }
-    findMedian() { return 0; }
-    findMode() { return 0; }
-    findSD() { return 0; }
-    findQ1() { return 0; }
-    findQ3() { return 0; }*/
-/*
-    render() {
-        return(
-            <div>
-            <div className="board-row">
-              {this.state.name}
-            </div>
-          </div>
-        );
-    }
-  }
-  */
-
 ReactDOM.render(
     <Game />,
     document.getElementById('root')
 );
 
 function calculateWinner(squares) {
+    if (squares === null) { return null; }
     const lines = [
         [0,1,2],
         [3,4,5],
@@ -207,7 +155,7 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a,b,c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
+            return [squares[a],a,b,c];
         }
     }
 
