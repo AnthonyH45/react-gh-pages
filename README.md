@@ -1,3 +1,7 @@
+# Currently working on
+- getting squares highlighted
+- using the :gparty: and :glider: emote instead of 'X' and 'O' for the squares, just displaying the `alt` in the img tag, not sure what is happening
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
