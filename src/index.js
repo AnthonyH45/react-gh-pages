@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import './index.css'
+import g from './content/gdance.gif'
+import x from './content/x.png'
+import o from './content/o.png'
 
 /*
 class Square extends React.Component {
@@ -27,7 +30,7 @@ class Square extends React.Component {
 function Square(props) {
     return (
         <button className="square" onClick={props.onClick}>
-            {props.value}
+            <img src={props.value} width="50x" height="50px"></img>
         </button>
     );
 }
@@ -45,6 +48,7 @@ class Board extends React.Component {
     render() {
         return (
             <div>
+                <img src={g} alt="1"></img>
                 <div className="board-row">
                     {this.renderSquare(0)}
                     {this.renderSquare(1)}
@@ -84,7 +88,7 @@ class Game extends React.Component {
 
         if (calculateWinner(squares) || squares[i]) { return; }
 
-        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        squares[i] = this.state.xIsNext ? x : o;
 
         this.setState({
             history: history.concat([{squares: squares}]),
